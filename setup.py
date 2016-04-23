@@ -10,7 +10,8 @@ except IOError:
 version = "0.0.1"
 
 INSTALL_REQUIREMENTS = [
-    'pymongo==3.0.2',
+      'pymongo==3.0.2',
+      'numpy'
 ]
 
 setup(name='datascraper',
