@@ -2,6 +2,7 @@ import argparse
 import pprint
 import pandas
 from asteroid_scraper.finder import find_asteroids
+from asteroid_scraper.math.tisserand import tisserand
 from asteroid_scraper.utils.dataframe_normalizer import normalize_asteroids
 
 
@@ -19,18 +20,14 @@ def main():
     opts = parser.parse_args()
 
     with open(opts.cycler_file, 'r') as _file:
-        cycler_orbits_df = pandas.read_csv(_file)
-        cycler_orbits = cycler_orbits_df.to_dict(orient="records")
+        cycler_orbits_df = pandas.read_csv(_file, header=0)
 
     with open(opts.asteroid_file, 'r') as _file:
-        asteroid_df = pandas.read_csv(_file)
-        normalize_asteroids(asteroid_df)
-        asteroid_orbits = asteroid_df.to_dict(orient="records")
+        asteroids_orbits_df = pandas.read_csv(_file, header=0)
+        normalize_asteroids(asteroids_orbits_df)
 
+    tisserand_criterion_results, q_function_result = find_asteroids(cycler_orbits_df,
+                                                                    asteroids_orbits_df)
 
-
-    find_asteroids(cycler_orbits, asteroid_orbits)
-
-
-
-
+    tisserand_criterion_results.head(100).to_csv('results/tisserand_criterion_result.csv')
+    q_function_result.head(100).to_csv('results/q_function_result.csv')
