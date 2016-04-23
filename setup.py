@@ -11,16 +11,17 @@ version = "0.0.1"
 
 INSTALL_REQUIREMENTS = [
       'pymongo==3.0.2',
-      'numpy'
+      'numpy',
+      "pandas==0.18.0"
 ]
 
-setup(name='datascraper',
+setup(name='asteroid_scraper',
       version=version,
       description="",
       long_description=README,
-      classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
+      classifiers=[],
       keywords='',
-      author='Unknown',
+      author='Carbonai dello Spazio',
       author_email='',
       url='',
       license='',
@@ -30,7 +31,7 @@ setup(name='datascraper',
       install_requires=INSTALL_REQUIREMENTS,
       entry_points={
             'console_scripts': [
-                  'scrape_data = datascraper.__main__:main',
+                  'scrape_asteroids = asteroid_scraper.__main__:main',
             ]
       }
       )
