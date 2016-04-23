@@ -8,7 +8,7 @@ def find_asteroids(cycler_orbits, asteroids):
     """
 
     results = []
-    asteroids = filter_asteroids(asteroids)
+    #asteroids = filter_asteroids(asteroids)
 
     for cycler_orbit in cycler_orbits:
         cycler_orbit['tisserand'] = tisserand.tisserand(tisserand.earth, cycler_orbit)
@@ -19,7 +19,7 @@ def find_asteroids(cycler_orbits, asteroids):
                             'cycler_orbit': cycler_orbit,
                             'tisserand_delta': tisserand_delta
                             })
-    print results
+    print results[0]
     return results
 
 
