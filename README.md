@@ -32,14 +32,15 @@ you can find sample files in the *example_files* folder::
 
     $ scrape_asteroids ./example_files/cycler_orbits.csv ./example_files/asteroids.csv -o example_files/results/results.csv -l 500
 
-> For a right **tisserand** and **Qfunction** column formatting watch the :ref:`csv_format` section.
+> For a right **tisserand** and **Qfunction** column formatting take a look at the the :ref:`csv_format` section.
+
 
 Command Line Options
 --------------------
 ``scrape_asteroids`` script provides some options to filter **asteroids** and limit the output, you
 can filter **asteroids** directly on the *Nasa query website*, set some filters or use the default
 ones::
-    
+
     usage: scrape_asteroids [-h] [-o OUTPUT] [-l LIMIT] [-a MIN_SEMIAX]
                             [-A MAX_SEMIAX] [-e MIN_ECCE] [-E MAX_ECCE]
                             [-i MIN_INCL] [-I MAX_INCL]
