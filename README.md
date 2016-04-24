@@ -2,7 +2,7 @@ About asteroid_scraper
 ======================
 
 ``asteroid_scraper`` is a python software that allows to discover
-asteroids eligible for mining, it compute **tisserand** and 
+asteroids eligible for mining, it computes **tisserand** and 
 **Qfunction** algorithms to evaluate the asteroid's orbit compared to 
 the **cycler** orbit, it's based on [**pandas Data Analysis Library**]
 (http://pandas.pydata.org/)
