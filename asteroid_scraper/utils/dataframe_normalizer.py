@@ -12,5 +12,6 @@ def normalize_asteroids(df):
     df['incl'] = radians(df['incl'])
     df['Omega'] = radians(df['Omega'])
     df['omegap'] = radians(df['omegap'])
+    return df
 
 

@@ -1,3 +1,4 @@
+import logging
 from numpy import NaN
 from numpy.core.umath import deg2rad, sqrt
 from numpy.ma import cos, power
@@ -29,7 +30,11 @@ def tisserand(ob2, ob1=EARTH_ORBIT):
                +2*cosisc_ga*sqrt(ob2['semiax']/ob1['semiax']*(1-power(ob2['ecce'], 2)))
 
     except TypeError:
-        print 'Error on tisserand', ob1, ob2
+        logging.warning('Error on tisserand computation', ob1, ob2)
         return NaN
+
+    except KeyError:
+        logging.error("Wrong File format")
+        raise SystemExit
 
     return tiss

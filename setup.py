@@ -3,15 +3,14 @@ import sys, os
 
 here = os.path.abspath(os.path.dirname(__file__))
 try:
-    README = open(os.path.join(here, 'README.rst')).read()
+    README = open(os.path.join(here, 'README.md')).read()
 except IOError:
     README = ''
 
 version = "0.0.1"
 
 INSTALL_REQUIREMENTS = [
-      'pymongo==3.0.2',
-      'numpy',
+      'numpy==1.11.0',
       "pandas==0.18.0"
 ]
 
