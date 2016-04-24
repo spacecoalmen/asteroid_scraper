@@ -1,23 +1,26 @@
 import argparse
+import logging
+import pprint
 import pandas
+import sys
 from asteroid_scraper.finder import AsteroidFinder
 from asteroid_scraper.utils.dataframe_normalizer import normalize_asteroids
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Find asteroids that can be mined by the cycler"
+        description="Find asteroids eligible to be mined by the cycler"
     )
 
     parser.add_argument('cycler',
-                        help='cycler orbits csv file')
+                        help='cycler orbits .csv file')
     parser.add_argument('asteroids',
-                        help='asteroids orbits csv file obtained at '
+                        help='asteroids orbits .csv file obtained at '
                              'http://ssd.jpl.nasa.gov/sbdb_query.cgi')
 
     parser.add_argument('-o', '--output',
                         default='example_files/results/results.csv',
-                        help='output file path',
+                        help='output .csv file path',
                         type=str)
 
     parser.add_argument('-l', '--limit',
@@ -30,13 +33,13 @@ def main():
                         help='sort by tisserand delta or q_function delta',
                         type=str)
 
-    parser.add_argument('-a', '--min_semiax',
+    parser.add_argument('-a', '--min_semiaxis',
                         default=1.0,
-                        help='asteroid minimun semiax',
+                        help='asteroid minimum semi major axis ',
                         type=float)
-    parser.add_argument('-A', '--max_semiax',
+    parser.add_argument('-A', '--max_semiaxis',
                         default=1.7,
-                        help='asteroid maximum semiax',
+                        help='asteroid maximum semi major axis',
                         type=float)
 
     parser.add_argument('-e', '--min_eccentricity',
@@ -48,13 +51,13 @@ def main():
                         help='asteroid maximum orbital eccentricity',
                         type=float)
 
-    parser.add_argument('-i', '--min_incl',
+    parser.add_argument('-i', '--min_inclination',
                         default=0.0,
-                        help='asteroid minimum incl (rad)',
+                        help='asteroid minimum inclination to ecliptic (rad)',
                         type=float)
-    parser.add_argument('-I', '--max_incl',
+    parser.add_argument('-I', '--max_inclination',
                         default=0.35,
-                        help='asteroid maximum incl (rad)',
+                        help='asteroid maximum inclination to ecliptic (rad)',
                         type=float)
 
     opts = parser.parse_args()
@@ -66,13 +69,19 @@ def main():
         asteroids_orbits_df = pandas.read_csv(_file, header=0)
         asteroids_orbits_df = normalize_asteroids(asteroids_orbits_df)
 
-    finder = AsteroidFinder(opts.min_semiax,
-                            opts.max_semiax,
+    finder = AsteroidFinder(opts.min_semiaxis,
+                            opts.max_semiaxis,
                             opts.min_eccentricity,
                             opts.max_eccentricity,
-                            opts.min_incl,
-                            opts.max_incl,
+                            opts.min_inclination,
+                            opts.max_inclination,
                             opts.sort_key)
     results = finder.find_asteroids(cycler_orbits_df, asteroids_orbits_df)
 
-    results.head(opts.limit).to_csv(opts.output)
+    asteroids_found = len(results['asteroid_id'].value_counts())
+    asteroids_total = len(asteroids_orbits_df['id'].value_counts())
+
+    pprint.pprint("Found %s asteroids on a total of %s"
+                  % (asteroids_found, asteroids_total))
+    results[:opts.limit].to_csv(opts.output)
+    pprint.pprint("Scraping done, results are in %s" % opts.output)

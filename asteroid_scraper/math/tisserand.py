@@ -1,7 +1,6 @@
 import logging
-from numpy import NaN
-from numpy.core.umath import deg2rad, sqrt
-from numpy.ma import cos, power
+from numpy import *
+
 
 EARTH_ORBIT = {
     'ecce': 0.0167,  # orbital eccetricity

@@ -1,5 +1,4 @@
 from numpy import NaN
-from numpy.core.umath import deg2rad
 from pandas import DataFrame
 from asteroid_scraper.math.qfunction import Qfunction
 from asteroid_scraper.math.tisserand import tisserand
@@ -29,14 +28,22 @@ class AsteroidFinder(object):
         return asteroid orbits that meet the filter requirement, each asteroid have tisserand value and
         tisserand delta with the cycler orbit
         """
-        progress_bar = ProgressBarThread()
-        progress_bar.start()
+        pb = ProgressBarThread("Computing tisserand")
+        pb.start()
 
         asteroids_orbits['tisserand'] = asteroids_orbits.apply(lambda row: tisserand(row), axis=1)
-        asteroids_orbits['q_function'] = asteroids_orbits.apply(lambda row: Qfunction(row), axis=1)
         cycler_orbits['tisserand'] = cycler_orbits.apply(lambda row: tisserand(row), axis=1)
-        cycler_orbits['q_function'] = cycler_orbits.apply(lambda row: Qfunction(row), axis=1)
 
+        pb.stop()
+
+        pb = ProgressBarThread("Computing Qfunction")
+        pb.start()
+        asteroids_orbits['q_function'] = asteroids_orbits.apply(lambda row: Qfunction(row), axis=1)
+        cycler_orbits['q_function'] = cycler_orbits.apply(lambda row: Qfunction(row), axis=1)
+        pb.stop()
+
+        pb = ProgressBarThread("Scraping asteroids")
+        pb.start()
         # from now, we treat data as dict data structure instead of pandas data frame,
         # need more expertise with pandas API ;)
 
@@ -71,8 +78,8 @@ class AsteroidFinder(object):
 
         # back to pandas data frame data structure
         results = DataFrame(results)
-        results = results.sort_values('delta_'+self.sort_key)
-        progress_bar.stop()
+        results = results.sort_values('delta_' + self.sort_key)
+        pb.stop()
         return results
 
     def filter_asteroids(self, asteroids_orbits):

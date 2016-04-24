@@ -1,6 +1,12 @@
 About asteroid_scraper
 ======================
 
+``asteroid_scraper`` is a python software that allows to discover
+asteroids eligible for mining, it compute **tisserand** and 
+**Qfunction** algorithms to evaluate the asteroid's orbit compared to 
+the **cycler** orbit, it's based on [**pandas Data Analysis Library**]
+(http://pandas.pydata.org/)
+
 Installing
 ==========
 
@@ -34,7 +40,7 @@ csv file* <http://ssd.jpl.nasa.gov/sbdb_query.cgi>, you can find sample
 files in the *example_files* folder:
 
     $ scrape_asteroids ./example_files/cycler_orbits.csv ./example_files/asteroids.csv \
-    -o example_files/results/results.csv -l 500
+      -o example_files/results/results.csv -l 500
 
 > For a right **tisserand** and **Qfunction** column formatting take a 
 > look at the the [CSV formatting section]
@@ -48,36 +54,40 @@ directly on the [Nasa search engine]
 (http://ssd.jpl.nasa.gov/sbdb_query.cgi), set some filters or use the 
 defaults:
 
-    usage: scrape_asteroids [-h] [-o OUTPUT] [-l LIMIT] [-a MIN_SEMIAX]
-                            [-A MAX_SEMIAX] [-e MIN_ECCE] [-E MAX_ECCE]
-                            [-i MIN_INCL] [-I MAX_INCL]
-                            asteroids cycler
-
-    Find asteroids that can be mined by the cycler
-
+    usage: scrape_asteroids [-h] [-o OUTPUT] [-l LIMIT]
+                            [-s {tisserand,q_function}] [-a MIN_SEMIAXIS]
+                            [-A MAX_SEMIAXIS] [-e MIN_ECCENTRICITY]
+                            [-E MAX_ECCENTRICITY] [-i MIN_INCLINATION]
+                            [-I MAX_INCLINATION]
+                            cycler asteroids
+    
+    Find asteroids eligible to be mined by the cycler
+    
     positional arguments:
-      asteroids             asteroids orbits csv file obtained at
+      cycler                cycler orbits .csv file
+      asteroids             asteroids orbits .csv file obtained at
                             http://ssd.jpl.nasa.gov/sbdb_query.cgi
-      cycler                cycler orbits csv file
-
+    
     optional arguments:
       -h, --help            show this help message and exit
       -o OUTPUT, --output OUTPUT
-                            output file path
+                            output .csv file path
       -l LIMIT, --limit LIMIT
                             limit the top N matches
-      -a MIN_SEMIAX, --min_semiax MIN_SEMIAX
-                            asteroid minimun semiax
-      -A MAX_SEMIAX, --max_semiax MAX_SEMIAX
-                            asteroid maximum semiax
-      -e MIN_ECCE, --min_ecce MIN_ECCE
+      -s {tisserand,q_function}, --sort_key {tisserand,q_function}
+                            sort by tisserand delta or q_function delta
+      -a MIN_SEMIAXIS, --min_semiaxis MIN_SEMIAXIS
+                            asteroid minimum semi major axis
+      -A MAX_SEMIAXIS, --max_semiaxis MAX_SEMIAXIS
+                            asteroid maximum semi major axis
+      -e MIN_ECCENTRICITY, --min_eccentricity MIN_ECCENTRICITY
                             asteroid minimum orbital eccentricity
-      -E MAX_ECCE, --max_ecce MAX_ECCE
+      -E MAX_ECCENTRICITY, --max_eccentricity MAX_ECCENTRICITY
                             asteroid maximum orbital eccentricity
-      -i MIN_INCL, --min_incl MIN_INCL
-                            asteroid minimum incl (rad)
-      -I MAX_INCL, --max_incl MAX_INCL
-                            asteroid maximum incl (rad)
+      -i MIN_INCLINATION, --min_inclination MIN_INCLINATION
+                            asteroid minimum inclination to ecliptic (rad)
+      -I MAX_INCLINATION, --max_inclination MAX_INCLINATION
+                            asteroid maximum inclination to ecliptic (rad)
 
 
 CSV format
@@ -87,20 +97,43 @@ The *csv files* must have the following columns:
 
 **cycler**
 
-| key    | unit  | description            |
-| ------ | ----  | ---------------------- |
-| ecce   | **    |                        |
-| incl   | *rad* |                        |
-| Omega  | *rad* |                        |
-| omegap | *rad* |                        |
-| semiax | **    |                        |
+| key    | unit  | description             |
+| ------ |:-----:| ----------------------- |
+| ecce   |       | orbital eccentricity    |
+| incl   | *rad* | inclination to ecliptic |
+| Omega  | *rad* | longitude of Omega      |
+| omegap | *rad* |                         |
+| semiax | *AU*  | semi major axis         |
 
 **asteroids_orbits**
 
-| key | unit  |  description          |
-| --- | ----  | --------------------- |
-| e   | **    |                       |
-| i   | *deg* |                       |
-| a   | **    |                       |
-| om  | *deg* |                       |
-| w   | *deg* |                       |
+| key | unit  | description             |
+| --- |:-----:| ----------------------- |
+| e   | **    | orbital eccentricity    |
+| i   | *deg* | inclination to ecliptic |
+| om  | *deg* | longitude of Omega      |
+| w   | *deg* |                         |
+| a   | *AU*  | semi major axis         |
+
+
+Examples
+========
+
+Scrape using default filters, limit output to 500 matches, sort by 
+**tisserand delta** column:
+
+    $ scrape_asteroids ./example_files/cycler_orbits.csv ./example_files/asteroids.csv \
+      -o example_files/results/500_tisserand_sorted_.csv -l 500 -s tisserand
+      
+Scrape using default_filter, limit output to 500 matches, sort by 
+**q_function delta** column:
+
+    $ scrape_asteroids ./example_files/cycler_orbits.csv ./example_files/asteroids.csv \
+      -o example_files/results/500_q_function_sorted_.csv -l 500 -s q_function
+      
+Scrape using custom filter, limit output to 500 matches, sort by 
+**q_function delta** column:
+
+    $ scrape_asteroids ./example_files/cycler_orbits.csv ./example_files/asteroids.csv \
+      -o example_files/results/custom_filters_500_q_function_sorted_.csv -l 500 -s q_function \
+      -a 1.0 -A 1.7 -e 0 -E 0.45 -i 0.0 -I 0.35

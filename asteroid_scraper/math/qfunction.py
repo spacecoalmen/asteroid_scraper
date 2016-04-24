@@ -1,6 +1,4 @@
 from numpy import *
-from numpy.core.umath import deg2rad, power, sqrt, exp, cos, arccos, sin, absolute
-f
 
 EARTH_ORBIT = {
     'ecce': 0.0167,  # orbital eccetricity
