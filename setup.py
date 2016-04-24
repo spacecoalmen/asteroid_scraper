@@ -10,8 +10,7 @@ except IOError:
 version = "0.0.1"
 
 INSTALL_REQUIREMENTS = [
-      'pymongo==3.0.2',
-      'numpy',
+      'numpy==1.11.0',
       "pandas==0.18.0"
 ]
 
