@@ -30,16 +30,17 @@ To run ``asteroid_scraper`` just use the ``scrape_asteroids`` command after inst
 provide *cycler orbits csv file* and *asteroids csv file* <http://ssd.jpl.nasa.gov/sbdb_query.cgi>,
 you can find sample files in the *example_files* folder::
 
-    $ scrape_asteroids ./example_files/cycler_orbits.csv ./example_files/asteroids.csv -o example_files/results/results.csv -l 500
+    $ scrape_asteroids ./example_files/cycler_orbits.csv ./example_files/asteroids.csv \
+    -o example_files/results/results.csv -l 500
 
-> For a right **tisserand** and **Qfunction** column formatting take a look at the the :ref:`csv_format` section.
-
+> For a right **tisserand** and **Qfunction** column formatting take a look at the the [CSV formatting 
+> section](https://github.com//spacecoalmen/asteroid_scraper/blob/master/README.md#csv-format)
 
 Command Line Options
 --------------------
 ``scrape_asteroids`` script provides some options to filter **asteroids** and limit the output, you
-can filter **asteroids** directly on the *Nasa query website*, set some filters or use the default
-ones::
+can filter **asteroids** directly on the [Nasa search engine](http://ssd.jpl.nasa.gov/sbdb_query.cgi), 
+set some filters or use the default ones::
 
     usage: scrape_asteroids [-h] [-o OUTPUT] [-l LIMIT] [-a MIN_SEMIAX]
                             [-A MAX_SEMIAX] [-e MIN_ECCE] [-E MAX_ECCE]
@@ -72,8 +73,6 @@ ones::
       -I MAX_INCL, --max_incl MAX_INCL
                             asteroid maximum incl (rad)
 
-
-.. csv_format:
 
 CSV format
 ==========
